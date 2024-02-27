@@ -1,7 +1,4 @@
 import time
-# from flask import Flask
-# from fastapi import FastAPI, File, UploadFile
-# from fastapi.responses import FileResponse
 from pathlib import *
 import urllib.request
 import shutil
@@ -9,9 +6,6 @@ import threading
 import multiprocessing
 import asyncio
 
-# app = FastAPI()
-
-# @app.get("./upload")
 def download(url, start_time):
     response = urllib.request.urlopen(url)
     urls = url.split('/')
@@ -70,9 +64,9 @@ def main():
         'https://static.wikia.nocookie.net/cnc_gamepedia_en/images/4/4b/Montauk_1.jpg',
         'https://static.wikia.nocookie.net/cnc_gamepedia_en/images/2/2d/Mastermind.jpg'
     ]
-    # task1(urls)
-    # task2(urls)
-    # task3(urls)
-    asyncio.run(task4(urls))
+    # task1(urls) #стандартное выполнение
+    # task2(urls) #многопоточное
+    # task3(urls) #многопроцессорное
+    asyncio.run(task4(urls)) #ассинхронное
 if __name__=="__main__":
     main()
