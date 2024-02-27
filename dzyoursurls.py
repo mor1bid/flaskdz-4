@@ -63,10 +63,10 @@ def main(url):
     urls = []
     urls.append(url)
 
-    # task1(urls) #стандартное выполнение
+    task1(urls) #стандартное выполнение
     # task2(urls) #многопоточное
     # task3(urls) #многопроцессорное
-    asyncio.run(task4(urls)) #ассинхронное
+    # asyncio.run(task4(urls)) #ассинхронное
     print(f"Total time: {time.time()-start_time:.2f} seconds")
 
 @app.cli.command("add-url")
@@ -74,6 +74,13 @@ def addurl():
     print("Введите адрес желаемого файла: ")
     url = input()
     main(url)
+
+@app.cli.command("clear")
+def clearupload():
+    path = Path('./upload/')
+    for file in path.rglob("*"):
+        Path(file).unlink()
+    print("Каталог очищен.")
 
 if __name__=="__main__":
     main()
