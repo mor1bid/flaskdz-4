@@ -1,12 +1,13 @@
-import requests, time, os
-from flask import Flask
-from fastapi import FastAPI, File, UploadFile
-from fastapi.responses import FileResponse
+import time
+# from flask import Flask
+# from fastapi import FastAPI, File, UploadFile
+# from fastapi.responses import FileResponse
 from pathlib import *
 import urllib.request
 import shutil
 import threading
 import multiprocessing
+import asyncio
 
 # app = FastAPI()
 
@@ -42,16 +43,36 @@ def task3(urls: list[str]):
     for p in processs:
         p.join()
 
+async def task4(urls: list[str]):
+    start_time = time.time()
+    task41 = asyncio.create_task(even(urls, start_time))
+    task42 = asyncio.create_task(odd(urls, start_time))
+    await task41
+    await task42
+
+async def even(urls: list[str], start_time):
+    for i in (i for i,url in enumerate(urls) if i / 2 == 0):
+        download(urls[i], start_time)
+        await asyncio.sleep(0.5)
+
+async def odd(urls: list[str], start_time):
+    for i in (i for i,url in enumerate(urls) if i / 2 != 0):
+        download(urls[i], start_time)
+        await asyncio.sleep(0.5)
+
 def main():
     Path(Path.cwd() / 'upload').mkdir(exist_ok=True)
     urls = [
         'https://static.wikia.nocookie.net/cnc_gamepedia_en/images/1/12/Romanov2.png', 
         'https://static.wikia.nocookie.net/cnc_gamepedia_en/images/0/08/CNCR_Kane_Banner.png', 
-        'https://static.wikia.nocookie.net/cnc_gamepedia_en/images/d/df/Tomahawk_Storm.jpg'
+        'https://static.wikia.nocookie.net/cnc_gamepedia_en/images/d/df/Tomahawk_Storm.jpg',
+        'https://static.wikia.nocookie.net/cnc_gamepedia_en/images/9/98/TS_Hammerfest_Base.png',
+        'https://static.wikia.nocookie.net/cnc_gamepedia_en/images/4/4b/Montauk_1.jpg',
+        'https://static.wikia.nocookie.net/cnc_gamepedia_en/images/2/2d/Mastermind.jpg'
     ]
     # task1(urls)
     # task2(urls)
-    task3(urls)
-
+    # task3(urls)
+    asyncio.run(task4(urls))
 if __name__=="__main__":
     main()
