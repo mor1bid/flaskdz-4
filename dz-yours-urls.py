@@ -5,7 +5,9 @@ import shutil
 import threading
 import multiprocessing
 import asyncio
+from flask import Flask
 
+app = Flask(__name__)
 start_time = time.time()
 
 def download(url, start_time):
@@ -56,20 +58,24 @@ async def odd(urls: list[str], start_time):
         download(urls[i], start_time)
         await asyncio.sleep(0.5)
 
-def main():
+def main(url):
     Path(Path.cwd() / 'upload').mkdir(exist_ok=True)
-    urls = [
-        'https://static.wikia.nocookie.net/cnc_gamepedia_en/images/1/12/Romanov2.png', 
-        'https://static.wikia.nocookie.net/cnc_gamepedia_en/images/0/08/CNCR_Kane_Banner.png', 
-        'https://static.wikia.nocookie.net/cnc_gamepedia_en/images/d/df/Tomahawk_Storm.jpg',
-        'https://static.wikia.nocookie.net/cnc_gamepedia_en/images/9/98/TS_Hammerfest_Base.png',
-        'https://static.wikia.nocookie.net/cnc_gamepedia_en/images/4/4b/Montauk_1.jpg',
-        'https://static.wikia.nocookie.net/cnc_gamepedia_en/images/2/2d/Mastermind.jpg'
-    ]
+    urls = []
+    urls.append(url)
+
     # task1(urls) #стандартное выполнение
     # task2(urls) #многопоточное
     # task3(urls) #многопроцессорное
     asyncio.run(task4(urls)) #ассинхронное
     print(f"Total time: {time.time()-start_time:.2f} seconds")
+
+@app.cli.command("add-url")
+def addurl():
+    print("Введите адрес желаемого файла: ")
+    url = input()
+    main(url)
+
+
 if __name__=="__main__":
+    # app.run(debug=True)
     main()
