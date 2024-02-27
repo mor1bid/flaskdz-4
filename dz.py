@@ -71,5 +71,6 @@ def main():
     # task3(urls) #многопроцессорное
     asyncio.run(task4(urls)) #ассинхронное
     print(f"Total time: {time.time()-start_time:.2f} seconds")
+
 if __name__=="__main__":
     main()

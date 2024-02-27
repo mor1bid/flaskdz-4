@@ -75,7 +75,5 @@ def addurl():
     url = input()
     main(url)
 
-
 if __name__=="__main__":
-    # app.run(debug=True)
     main()
